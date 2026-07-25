@@ -94,4 +94,4 @@ npm run dev
 ## 🤝 Kontribusi
 Jika Anda ingin berkontribusi pada proyek ini, silakan buat *Pull Request* atau *Issue* di repository ini.
 
-*Dibuat dengan ❤️ untuk komunitas developer.*
+*Dibuat dengan ❤️ untuk komunitas developer. Salam Developer....*
