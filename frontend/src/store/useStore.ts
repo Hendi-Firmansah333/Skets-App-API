@@ -40,6 +40,20 @@ interface AppState {
   setConfigColors: (val: string) => void;
   configInstructions: string;
   setConfigInstructions: (val: string) => void;
+
+  // Banner Configuration
+  outputType: "image" | "banner";
+  setOutputType: (type: "image" | "banner") => void;
+  bannerSize: string;
+  setBannerSize: (val: string) => void;
+  bannerTitle: string;
+  setBannerTitle: (val: string) => void;
+  bannerElements: string;
+  setBannerElements: (val: string) => void;
+  bannerContentText: string;
+  setBannerContentText: (val: string) => void;
+  bannerColors: string;
+  setBannerColors: (val: string) => void;
 }
 
 export const useStore = create<AppState>((set) => ({
@@ -77,4 +91,17 @@ export const useStore = create<AppState>((set) => ({
   setConfigColors: (val) => set({ configColors: val }),
   configInstructions: "",
   setConfigInstructions: (val) => set({ configInstructions: val }),
+
+  outputType: "image",
+  setOutputType: (type) => set({ outputType: type }),
+  bannerSize: "",
+  setBannerSize: (val) => set({ bannerSize: val }),
+  bannerTitle: "",
+  setBannerTitle: (val) => set({ bannerTitle: val }),
+  bannerElements: "",
+  setBannerElements: (val) => set({ bannerElements: val }),
+  bannerContentText: "",
+  setBannerContentText: (val) => set({ bannerContentText: val }),
+  bannerColors: "",
+  setBannerColors: (val) => set({ bannerColors: val }),
 }));

@@ -11,7 +11,13 @@ async def analyze_image(
     description: str = Form(""),
     theme: str = Form(""),
     colors: str = Form(""),
-    instructions: str = Form("")
+    instructions: str = Form(""),
+    output_type: str = Form("image"),
+    banner_size: str = Form(""),
+    banner_title: str = Form(""),
+    banner_elements: str = Form(""),
+    banner_content: str = Form(""),
+    banner_colors: str = Form("")
 ):
     """
     Endpoint to process an uploaded sketch along with configuration data.
@@ -19,11 +25,17 @@ async def analyze_image(
     contents = await file.read()
     
     context_data = {
+        "output_type": output_type,
         "title": title,
         "description": description,
         "theme": theme,
         "colors": colors,
-        "instructions": instructions
+        "instructions": instructions,
+        "banner_size": banner_size,
+        "banner_title": banner_title,
+        "banner_elements": banner_elements,
+        "banner_content": banner_content,
+        "banner_colors": banner_colors
     }
     
     # Process through Gemini

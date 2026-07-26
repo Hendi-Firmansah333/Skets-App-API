@@ -28,7 +28,13 @@ export default function WorkspacePage() {
     configDescription, setConfigDescription,
     configTheme, setConfigTheme,
     configColors, setConfigColors,
-    configInstructions, setConfigInstructions
+    configInstructions, setConfigInstructions,
+    outputType, setOutputType,
+    bannerSize, setBannerSize,
+    bannerTitle, setBannerTitle,
+    bannerElements, setBannerElements,
+    bannerContentText, setBannerContentText,
+    bannerColors, setBannerColors
   } = useStore();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -64,11 +70,22 @@ export default function WorkspacePage() {
     try {
       const formData = new FormData();
       formData.append("file", imageFile);
-      formData.append("title", configTitle);
-      formData.append("description", configDescription);
-      formData.append("theme", configTheme);
-      formData.append("colors", configColors);
-      formData.append("instructions", configInstructions);
+      formData.append("output_type", outputType);
+      
+      if (outputType === "banner") {
+        formData.append("banner_size", bannerSize);
+        formData.append("banner_title", bannerTitle);
+        formData.append("banner_elements", bannerElements);
+        formData.append("banner_content", bannerContentText);
+        formData.append("banner_colors", bannerColors);
+        formData.append("instructions", configInstructions);
+      } else {
+        formData.append("title", configTitle);
+        formData.append("description", configDescription);
+        formData.append("theme", configTheme);
+        formData.append("colors", configColors);
+        formData.append("instructions", configInstructions);
+      }
 
       const response = await fetch("http://localhost:8000/api/v1/analysis/analyze", {
         method: "POST",
@@ -166,76 +183,178 @@ export default function WorkspacePage() {
                   exit={{ opacity: 0, x: -10 }}
                   className="flex flex-col gap-6"
                 >
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                      <AlignLeft size={16} className="text-indigo-500" />
-                      1. Informasi Utama
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-slate-500 mb-1 block">Judul / Subjek Utama</label>
-                      <input 
-                        type="text" 
-                        value={configTitle}
-                        onChange={(e) => setConfigTitle(e.target.value)}
-                        placeholder="E.g. Karakter Robot Samurai"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-slate-500 mb-1 block">Deskripsi Spesifik</label>
-                      <textarea 
-                        value={configDescription}
-                        onChange={(e) => setConfigDescription(e.target.value)}
-                        placeholder="Detail pakaian, suasana, aksi yang sedang dilakukan..."
-                        rows={3}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
-                      />
-                    </div>
+                  <div className="flex bg-slate-100 p-1 rounded-lg">
+                    <button
+                      onClick={() => setOutputType("image")}
+                      className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${outputType === "image" ? "bg-white shadow-sm text-indigo-600" : "text-slate-500 hover:text-slate-700"}`}
+                    >
+                      Mode Gambar
+                    </button>
+                    <button
+                      onClick={() => setOutputType("banner")}
+                      className={`flex-1 py-1.5 text-xs font-medium rounded-md transition-colors ${outputType === "banner" ? "bg-white shadow-sm text-indigo-600" : "text-slate-500 hover:text-slate-700"}`}
+                    >
+                      Mode Banner
+                    </button>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                      <Palette size={16} className="text-indigo-500" />
-                      2. Spesifikasi Visual
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-slate-500 mb-1 block">Tema Desain</label>
-                      <input 
-                        type="text" 
-                        value={configTheme}
-                        onChange={(e) => setConfigTheme(e.target.value)}
-                        placeholder="E.g. Cyberpunk, Minimalist, Pixar 3D"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                      />
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-slate-500 mb-1 block">Warna Dominan</label>
-                      <input 
-                        type="text" 
-                        value={configColors}
-                        onChange={(e) => setConfigColors(e.target.value)}
-                        placeholder="E.g. Neon Pink dan Biru"
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
-                      />
-                    </div>
-                  </div>
+                  {outputType === "image" ? (
+                    <>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <AlignLeft size={16} className="text-indigo-500" />
+                          Informasi Utama
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Judul / Subjek Utama</label>
+                          <input 
+                            type="text" 
+                            value={configTitle}
+                            onChange={(e) => setConfigTitle(e.target.value)}
+                            placeholder="E.g. Karakter Robot Samurai"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Deskripsi Spesifik</label>
+                          <textarea 
+                            value={configDescription}
+                            onChange={(e) => setConfigDescription(e.target.value)}
+                            placeholder="Detail pakaian, suasana, aksi yang sedang dilakukan..."
+                            rows={3}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                          />
+                        </div>
+                      </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
-                      <Settings2 size={16} className="text-indigo-500" />
-                      3. Instruksi Khusus
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-slate-500 mb-1 block">Prompt Pendukung</label>
-                      <textarea 
-                        value={configInstructions}
-                        onChange={(e) => setConfigInstructions(e.target.value)}
-                        placeholder="Instruksi tambahan yang wajib diikuti AI (Misal: jangan ubah posisi elemen, tambahkan efek hujan)"
-                        rows={4}
-                        className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
-                      />
-                    </div>
-                  </div>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <Palette size={16} className="text-indigo-500" />
+                          Spesifikasi Visual
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Tema Desain</label>
+                          <input 
+                            type="text" 
+                            value={configTheme}
+                            onChange={(e) => setConfigTheme(e.target.value)}
+                            placeholder="E.g. Cyberpunk, Minimalist, Pixar 3D"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Warna Dominan</label>
+                          <input 
+                            type="text" 
+                            value={configColors}
+                            onChange={(e) => setConfigColors(e.target.value)}
+                            placeholder="E.g. Neon Pink dan Biru"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <Settings2 size={16} className="text-indigo-500" />
+                          Instruksi Khusus
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Prompt Pendukung</label>
+                          <textarea 
+                            value={configInstructions}
+                            onChange={(e) => setConfigInstructions(e.target.value)}
+                            placeholder="Instruksi tambahan yang wajib diikuti AI (Misal: jangan ubah posisi elemen, tambahkan efek hujan)"
+                            rows={4}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <AlignLeft size={16} className="text-indigo-500" />
+                          Informasi Banner
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Ukuran / Orientasi</label>
+                          <input 
+                            type="text" 
+                            value={bannerSize}
+                            onChange={(e) => setBannerSize(e.target.value)}
+                            placeholder="E.g. 1200x630 (Landscape)"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Judul Banner</label>
+                          <input 
+                            type="text" 
+                            value={bannerTitle}
+                            onChange={(e) => setBannerTitle(e.target.value)}
+                            placeholder="E.g. Promo Kemerdekaan"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <Palette size={16} className="text-indigo-500" />
+                          Spesifikasi Konten
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Elemen Visual</label>
+                          <textarea 
+                            value={bannerElements}
+                            onChange={(e) => setBannerElements(e.target.value)}
+                            placeholder="E.g. Logo di kiri atas, gambar produk..."
+                            rows={2}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Konten / Copywriting</label>
+                          <textarea 
+                            value={bannerContentText}
+                            onChange={(e) => setBannerContentText(e.target.value)}
+                            placeholder="E.g. Diskon 50% untuk semua item..."
+                            rows={3}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Warna Dominan</label>
+                          <input 
+                            type="text" 
+                            value={bannerColors}
+                            onChange={(e) => setBannerColors(e.target.value)}
+                            placeholder="E.g. Merah Putih"
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-2 text-sm font-semibold text-slate-800">
+                          <Settings2 size={16} className="text-indigo-500" />
+                          Instruksi Khusus
+                        </div>
+                        <div>
+                          <label className="text-xs font-medium text-slate-500 mb-1 block">Prompt Pendukung</label>
+                          <textarea 
+                            value={configInstructions}
+                            onChange={(e) => setConfigInstructions(e.target.value)}
+                            placeholder="Instruksi tambahan yang wajib diikuti AI..."
+                            rows={3}
+                            className="w-full px-3 py-2 bg-white border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all resize-none"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div 
@@ -333,14 +452,14 @@ export default function WorkspacePage() {
 
         {/* Right Sidebar - Output & Settings */}
         <aside className="w-96 border-l border-slate-200 bg-white flex flex-col z-10 shadow-[-2px_0_10px_rgba(0,0,0,0.02)] hidden lg:flex shrink-0">
-          <div className="p-4 border-b border-slate-100 bg-slate-50">
+          <div className="p-4 border-b border-slate-100 bg-white">
             <h2 className="text-sm font-semibold text-slate-800 flex items-center gap-2 mb-3">
               <Wand2 size={16} className="text-indigo-500" />
               Hasil Generate AI
             </h2>
           </div>
           
-          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-6 bg-slate-50/50">
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-6 bg-white">
             {/* Prompt Output */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between">
