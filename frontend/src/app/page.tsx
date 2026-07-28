@@ -2,7 +2,8 @@
 
 import { useState, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
-import { Upload, Download, Layers, Wand2, Settings2, Image as ImageIcon, Play, Sparkles, Loader2, Lock, Unlock, AlignLeft, Palette, Copy, Check } from "lucide-react";
+import Link from "next/link";
+import { Upload, Download, Layers, Wand2, Settings2, Image as ImageIcon, Play, Sparkles, Loader2, Lock, Unlock, AlignLeft, Palette, Copy, Check, FileText } from "lucide-react";
 import { useStore } from "../store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -137,6 +138,10 @@ export default function WorkspacePage() {
           </div>
         </div>
         <div className="flex items-center gap-3">
+          <Link href="/docs" className="flex items-center gap-2 mr-2 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors">
+            <FileText size={16} />
+            Dokumentasi
+          </Link>
           <button className="flex items-center gap-2 rounded-md border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 hover:text-slate-900 transition-colors shadow-sm disabled:opacity-50" disabled={!structuredJson}>
             <Download size={16} />
             Export JSON
