@@ -117,9 +117,14 @@ export default function DocumentationPage() {
             </div>
             <h4 className="font-bold text-sm mb-1 relative z-10">Butuh Bantuan?</h4>
             <p className="text-xs text-indigo-100 mb-3 relative z-10">Pelajari lebih lanjut tentang integrasi API atau laporkan masalah.</p>
-            <button className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-xs font-bold transition-colors relative z-10">
+            <a 
+              href="https://wa.me/6289507931092"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-2 bg-white/20 hover:bg-white/30 backdrop-blur-sm rounded-lg text-xs font-bold transition-colors relative z-10 flex justify-center items-center"
+            >
               Hubungi Support
-            </button>
+            </a>
           </div>
         </div>
       </aside>
