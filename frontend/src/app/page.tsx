@@ -497,9 +497,9 @@ export default function WorkspacePage() {
               </div>
               <motion.div 
                 layout
-                className="rounded-lg border border-slate-700 bg-slate-900 p-4 text-sm text-indigo-300 shadow-inner flex-1 font-mono overflow-auto whitespace-pre leading-relaxed"
+                className="rounded-xl border border-slate-200 bg-slate-50/80 p-5 text-sm text-slate-700 shadow-sm flex-1 font-mono overflow-auto whitespace-pre leading-relaxed backdrop-blur-sm"
               >
-                {structuredJson ? JSON.stringify(structuredJson, null, 2) : <span className="text-slate-600">// Representasi JSON akan muncul di sini...</span>}
+                {structuredJson ? JSON.stringify(structuredJson, null, 2) : <span className="text-slate-400 italic">// Representasi JSON akan muncul di sini...</span>}
               </motion.div>
             </div>
           </div>
